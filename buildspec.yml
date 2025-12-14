@@ -9,9 +9,8 @@ phases:
     commands:
       - yum install -y openssh-clients
       - mkdir -p ~/.ssh
-      - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+      - printf "%s\n" "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
-      - ssh-keyscan -H 43.205.119.20 >> ~/.ssh/known_hosts
 
   build:
     commands:
@@ -19,10 +18,10 @@ phases:
 
   post_build:
     commands:
-      - ssh ec2-user@43.205.119.20 "mkdir -p /home/ec2-user/app"
+      - ssh -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "mkdir -p /home/ec2-user/app"
       - scp -o StrictHostKeyChecking=no target/*.jar ec2-user@43.205.119.20:/home/ec2-user/app/
-      - ssh ec2-user@43.205.119.20 "pkill -f java || true"
-      - ssh ec2-user@43.205.119.20 "nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &"
+      - ssh -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "pkill -f java || true"
+      - ssh -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &"
 
 artifacts:
   files:
