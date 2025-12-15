@@ -21,7 +21,7 @@ phases:
     commands:
       - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "mkdir -p /home/ec2-user/app"
       - scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no target/*.jar ec2-user@43.205.119.20:/home/ec2-user/app/
-      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "pkill -f java || true"
+      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "sudo pkill -f java || true"
       - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &"
 
 artifacts:
