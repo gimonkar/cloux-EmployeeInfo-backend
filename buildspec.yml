@@ -11,6 +11,7 @@ phases:
       - mkdir -p ~/.ssh
       - echo "$SSH_PRIVATE_KEY" | sed 's/\\r//' > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
+      - ssh-keygen -lf ~/.ssh/id_rsa   # validates key format
 
   build:
     commands:
@@ -18,10 +19,10 @@ phases:
 
   post_build:
     commands:
-      - ssh -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "mkdir -p /home/ec2-user/app"
-      - scp -o StrictHostKeyChecking=no target/*.jar ec2-user@43.205.119.20:/home/ec2-user/app/
-      - ssh -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "pkill -f java || true"
-      - ssh -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &"
+      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "mkdir -p /home/ec2-user/app"
+      - scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no target/*.jar ec2-user@43.205.119.20:/home/ec2-user/app/
+      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "pkill -f java || true"
+      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &"
 
 artifacts:
   files:
