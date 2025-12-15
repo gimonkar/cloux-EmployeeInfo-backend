@@ -2,14 +2,14 @@ version: 0.2
 
 env:
   secrets-manager:
-    SSH_PRIVATE_KEY: codebuild-ec2-ssh-key-v2:SSH_PRIVATE_KEY
+    SSH_PRIVATE_KEY_B64: codebuild-ec2-ssh-key-b64:SSH_PRIVATE_KEY_B64
 
 phases:
   install:
     commands:
       - yum install -y openssh-clients
       - mkdir -p ~/.ssh
-      - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+      - echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
       - ssh-keygen -lf ~/.ssh/id_rsa
 
