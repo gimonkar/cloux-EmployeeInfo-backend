@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   secrets-manager:
-    SSH_PRIVATE_KEY: codebuild-ec2-ssh-key:SSH_PRIVATE_KEY
+    SSH_PRIVATE_KEY: codebuild-ec2-ssh-key-v2:SSH_PRIVATE_KEY
 
 phases:
   install:
