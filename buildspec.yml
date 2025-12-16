@@ -20,17 +20,17 @@ phases:
   post_build:
     commands:
       # Ensure app directory exists
-      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 "mkdir -p /home/ec2-user/app"
+      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@65.2.141.219 "mkdir -p /home/ec2-user/app"
 
       # Copy new JAR
-      - scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no target/*.jar ec2-user@43.205.119.20:/home/ec2-user/app/
+      - scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no target/*.jar ec2-user@65.2.141.219:/home/ec2-user/app/
 
       # Stop old app safely using PID (NO pkill)
-      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 \
+      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@65.2.141.219 \
         "if [ -f /home/ec2-user/app/app.pid ]; then kill $(cat /home/ec2-user/app/app.pid) || true; fi"
 
       # Start app and store new PID
-      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@43.205.119.20 \
+      - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@65.2.141.219 \
         "cd /home/ec2-user/app && nohup java -jar *.jar > app.log 2>&1 & echo $! > app.pid"
 
 artifacts:
